@@ -1,9 +1,17 @@
 import express from "express";
 import { authenticate } from "../middlewares/auth.middleware";
 import { authorizeRoles } from "../middlewares/role.middleware";
-import { create, getAll, updateStatus } from "../controllers/task.controller";
+import {
+  create,
+  getAll,
+  updateStatus,
+  getFeed,
+} from "../controllers/task.controller";
 
 const router = express.Router();
+
+// 🔥 FEED (must be before /:id routes)
+router.get("/feed", authenticate, getFeed);
 
 // 🔥 MAIN TASK ROUTES
 router.post("/", authenticate, create);
@@ -12,7 +20,7 @@ router.get("/", authenticate, getAll);
 // 🔥 UPDATE TASK STATUS
 router.patch("/:id/status", authenticate, updateStatus);
 
-// 🔥 OPTIONAL ROLE TEST (you can keep or remove)
+// 🔥 OPTIONAL ROLE TEST
 router.get("/admin", authenticate, authorizeRoles("ADMIN"), (req, res) => {
   res.json({ message: "Welcome Admin" });
 });

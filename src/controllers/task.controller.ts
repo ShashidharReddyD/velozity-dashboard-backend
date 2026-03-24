@@ -3,6 +3,7 @@ import {
   createTask,
   getTasks,
   updateTaskStatus,
+  getActivityFeed, // ✅ ADD THIS
 } from "../services/task.service";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import { Status } from "@prisma/client";
@@ -60,10 +61,20 @@ export const create = async (req: AuthRequest, res: Response) => {
 // 🔥 GET TASKS
 export const getAll = async (req: AuthRequest, res: Response) => {
   try {
-    const tasks = await getTasks(req.user);
+    const tasks = await getTasks(req.user , req.query);
     res.json(tasks);
   } catch (err: any) {
     console.log("GET TASKS ERROR:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getFeed = async (req: AuthRequest, res: Response) => {
+  try {
+    const logs = await getActivityFeed(req.user);
+    res.json(logs);
+  } catch (err: any) {
+    console.log("FEED ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 };

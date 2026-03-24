@@ -1,10 +1,20 @@
 import "dotenv/config";
+import http from "http";
 import app from "./app";
+import { initSocket } from "./socket";
+import { startJob } from "./job";
 
 const PORT = 5000;
 
-console.log(process.env.JWT_SECRET); // now should work
+const server = http.createServer(app);
 
-app.listen(PORT, () => {
+// 🔥 start background job
+startJob();
+
+// 🔥 initialize socket
+initSocket(server);
+
+// 🔥 IMPORTANT: use server.listen
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -2,9 +2,9 @@
 
 ## 📌 Overview
 
-A scalable backend system for managing **clients, projects, and tasks** with secure authentication, role-based access control (RBAC), and activity tracking.
+A scalable backend system for managing **clients, projects, and tasks** with secure authentication, role-based access control (RBAC), and real-time activity tracking.
 
-This project demonstrates **real-world backend architecture** including modular design, middleware usage, and database relations.
+This project demonstrates **production-level backend architecture** including modular design, middleware usage, database relations, and real-time communication.
 
 ---
 
@@ -12,11 +12,11 @@ This project demonstrates **real-world backend architecture** including modular 
 
 * JWT-based authentication system
 * Role-Based Access Control (ADMIN, PM, DEV)
-* Structured relational data model (Client → Project → Task)
+* Structured relational model (Client → Project → Task)
+* Real-time updates using Socket.io
 * Activity logging for task status transitions
-* Centralized error handling using middleware
-* Optimized API responses using Prisma `select`
-* Input validation for secure APIs
+* Centralized error handling middleware
+* Query-based filtering & dashboard APIs
 
 ---
 
@@ -26,7 +26,9 @@ This project demonstrates **real-world backend architecture** including modular 
 * **Language:** TypeScript
 * **Database:** PostgreSQL
 * **ORM:** Prisma
-* **Auth:** JWT (JSON Web Tokens)
+* **Authentication:** JWT
+* **Real-time:** Socket.io
+* **Scheduler:** node-cron
 
 ---
 
@@ -36,8 +38,12 @@ This project demonstrates **real-world backend architecture** including modular 
 * Role-Based Authorization
 * Client & Project Management
 * Task Assignment & Lifecycle Management
-* Activity Logs for tracking status updates
-* Input validation & error handling
+* Activity Logs for tracking status changes
+* Real-time task updates (WebSocket)
+* Dashboard APIs (Admin, PM, Dev)
+* Filtering support (status, priority, date range)
+* Background job for overdue tasks
+* Input validation & centralized error handling
 
 ---
 
@@ -64,9 +70,13 @@ This project demonstrates **real-world backend architecture** including modular 
 * GET `/api/tasks`
 * PATCH `/api/tasks/:id/status`
 
-### 📜 Logs
+### 📜 Activity Feed
 
-* GET `/api/tasks/logs`
+* GET `/api/tasks/feed`
+
+### 📊 Dashboard
+
+* GET `/api/dashboard`
 
 ---
 
@@ -129,9 +139,49 @@ PATCH `/api/tasks/2/status`
 
 ---
 
-### 📜 Get Activity Logs
+### 📜 Get Activity Feed
 
-GET `/api/tasks/logs`
+GET `/api/tasks/feed`
+
+---
+
+## ⚡ Real-Time Updates
+
+* Implemented using Socket.io
+* Emits `taskUpdated` event on task status change
+* Role-based event delivery (only assigned user receives updates)
+
+---
+
+## 📊 Dashboard API
+
+* **Admin:** total projects, tasks, status breakdown, overdue tasks
+* **PM:** project-wise task overview
+* **Developer:** assigned tasks sorted by due date
+
+---
+
+## 🔍 Filtering Support
+
+Supports query-based filtering:
+
+* `status`
+* `priority`
+* `startDate` & `endDate`
+
+Example:
+
+```
+GET /api/tasks?status=TODO&priority=HIGH
+```
+
+---
+
+## ⏱ Background Job
+
+* Runs using cron scheduler
+* Checks overdue tasks every minute
+* Automatically updates task status if needed
 
 ---
 
@@ -172,10 +222,10 @@ npm run dev
 
 ## 📈 Future Improvements
 
-* Pagination & filtering for large datasets
-* Real-time updates using WebSockets
+* Pagination for large datasets
 * Notification system
 * Frontend dashboard (React)
+* Deployment (AWS / Render)
 
 ---
 
