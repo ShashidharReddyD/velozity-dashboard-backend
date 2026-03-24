@@ -2,64 +2,142 @@
 
 ## 📌 Overview
 
-A scalable backend system for managing clients, projects, and tasks with role-based access control (RBAC) and activity logging.
+A scalable backend system for managing **clients, projects, and tasks** with secure authentication, role-based access control (RBAC), and activity tracking.
+
+This project demonstrates **real-world backend architecture** including modular design, middleware usage, and database relations.
+
+---
+
+## ⭐ Highlights
+
+* JWT-based authentication system
+* Role-Based Access Control (ADMIN, PM, DEV)
+* Structured relational data model (Client → Project → Task)
+* Activity logging for task status transitions
+* Centralized error handling using middleware
+* Optimized API responses using Prisma `select`
+* Input validation for secure APIs
 
 ---
 
 ## 🛠 Tech Stack
 
-* Node.js
-* Express.js
-* TypeScript
-* PostgreSQL
-* Prisma ORM
-* JWT Authentication
+* **Backend:** Node.js, Express.js
+* **Language:** TypeScript
+* **Database:** PostgreSQL
+* **ORM:** Prisma
+* **Auth:** JWT (JSON Web Tokens)
 
 ---
 
 ## 🔐 Features
 
-* User Authentication (JWT)
-* Role-Based Access Control (ADMIN, PM, DEV)
-* Client → Project → Task hierarchy
-* Task lifecycle management (TODO → IN_PROGRESS → DONE)
-* Activity logging for task updates
-* Input validation and error handling
+* User Authentication (Register/Login)
+* Role-Based Authorization
+* Client & Project Management
+* Task Assignment & Lifecycle Management
+* Activity Logs for tracking status updates
+* Input validation & error handling
 
 ---
 
 ## 📂 API Endpoints
 
-### Auth
+### 🔐 Auth
 
 * POST `/api/auth/register`
 * POST `/api/auth/login`
 
-### Clients
+### 👥 Clients
 
 * POST `/api/clients`
 * GET `/api/clients`
 
-### Projects
+### 📁 Projects
 
 * POST `/api/projects`
 * GET `/api/projects`
 
-### Tasks
+### 📌 Tasks
 
 * POST `/api/tasks`
 * GET `/api/tasks`
 * PATCH `/api/tasks/:id/status`
 
-### Logs
+### 📜 Logs
 
 * GET `/api/tasks/logs`
 
 ---
 
+## 🔎 Sample API Usage
+
+### 🔐 Login
+
+POST `/api/auth/login`
+
+```json
+{
+  "email": "admin2@test.com",
+  "password": "1234"
+}
+```
+
+**Response**
+
+```json
+{
+  "accessToken": "JWT_TOKEN"
+}
+```
+
+---
+
+### 📌 Create Task
+
+POST `/api/tasks`
+
+Headers:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+Content-Type: application/json
+```
+
+```json
+{
+  "title": "Task 1",
+  "description": "First task",
+  "priority": "HIGH",
+  "dueDate": "2026-04-01",
+  "projectId": 3,
+  "assignedTo": 3
+}
+```
+
+---
+
+### 🔄 Update Task Status
+
+PATCH `/api/tasks/2/status`
+
+```json
+{
+  "status": "DONE"
+}
+```
+
+---
+
+### 📜 Get Activity Logs
+
+GET `/api/tasks/logs`
+
+---
+
 ## ⚙️ Setup Instructions
 
-1. Clone repo:
+1. Clone repository:
 
 ```bash
 git clone <your-repo-link>
@@ -71,20 +149,20 @@ git clone <your-repo-link>
 npm install
 ```
 
-3. Setup `.env`:
+3. Configure environment variables:
 
 ```env
 DATABASE_URL=postgresql://username:password@localhost:5432/dbname
 JWT_SECRET=your_secret
 ```
 
-4. Run migrations:
+4. Run database migrations:
 
 ```bash
 npx prisma migrate dev
 ```
 
-5. Start server:
+5. Start development server:
 
 ```bash
 npm run dev
@@ -94,13 +172,13 @@ npm run dev
 
 ## 📈 Future Improvements
 
-* Pagination & filtering
-* Real-time updates (WebSockets)
-* Notifications system
-* Frontend integration
+* Pagination & filtering for large datasets
+* Real-time updates using WebSockets
+* Notification system
+* Frontend dashboard (React)
 
 ---
 
 ## 👨‍💻 Author
 
-SHASHIDHAR REDDY D
+**Shashidhar Reddy D**
